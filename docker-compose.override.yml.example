@@ -2,26 +2,24 @@ version: '3'
 
 # This is an example override file. Copy it to docker-compose.override.yml to use it.
 # docker-compose will automatically merge this with the main docker-compose.yml file.
+# Note: Since we're using host networking, some network-related overrides won't apply.
 
 services:
-  # Example: Add Traefik reverse proxy for Jellyfin
+  # Example: Add environment variables to Jellyfin
   jellyfin:
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.yourdomain.com`)"
-      - "traefik.http.routers.jellyfin.entrypoints=websecure"
-      - "traefik.http.routers.jellyfin.tls.certresolver=myresolver"
+    environment:
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.yourdomain.com  # For remote access
 
-  # Example: Add custom network settings for Sonarr
+  # Example: Add custom volume mounts to Sonarr
   sonarr:
-    networks:
-      - vpn_network
-      - default
+    volumes:
+      - /mnt/external_drive/media:/external_media:ro  # Additional read-only media
 
   # Example: Add Watchtower for automatic container updates
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
+    network_mode: "host"  # Use host networking like other containers
     environment:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_SCHEDULE=0 0 4 * * * # Update at 4 AM
@@ -29,9 +27,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
-# Example: Add custom networks
-networks:
-  vpn_network:
-    external: true
-  default:
-    name: media_network
+  # Example: Add Heimdall dashboard
+  heimdall:
+    image: linuxserver/heimdall:latest
+    container_name: heimdall
+    network_mode: "host"  # Use host networking like other containers
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./config/heimdall:/config
+    restart: unless-stopped

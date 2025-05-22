@@ -71,7 +71,7 @@ docker-compose down
 
 ## Accessing the Services
 
-After starting the containers, you can access each service at:
+All services are configured to use host networking, which means they're accessible directly on the host's network interface using their default ports. After starting the containers, you can access each service at:
 
 - **Sonarr**: http://localhost:8989
 - **Radarr**: http://localhost:7878
@@ -80,6 +80,20 @@ After starting the containers, you can access each service at:
 - **SABnzbd**: http://localhost:8080
 - **NZBGet**: http://localhost:6789
 - **Transmission**: http://localhost:9091
+
+You can also access these services from other devices on your network by replacing `localhost` with your server's IP address.
+
+### Host Networking
+
+All containers are configured to use host networking (`network_mode: "host"`), which provides several benefits:
+
+1. **Direct Network Access**: Services run directly on the host's network, eliminating the need for port mapping
+2. **Better Performance**: Reduced network overhead compared to Docker's bridge networking
+3. **Simplified Configuration**: Services can communicate with each other using localhost
+4. **Full Network Functionality**: Services like DLNA discovery and UPnP work without additional configuration
+5. **Access from Other Devices**: Services are accessible from other devices on your network using your server's IP address
+
+Note that with host networking, you cannot run multiple services that use the same port. If you need to change a service's port, you'll need to configure it within the service's settings rather than through Docker port mapping.
 
 ## Configuration
 
@@ -95,7 +109,8 @@ PGID=1000
 # Timezone
 TZ=America/Chicago
 
-# Ports
+# Ports (not used for port mapping since we're using host networking)
+# These are kept for reference and potential future use
 SONARR_PORT=8989
 RADARR_PORT=7878
 JELLYSEERR_PORT=5055

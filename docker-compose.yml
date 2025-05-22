@@ -5,6 +5,7 @@ services:
   sonarr:
     image: linuxserver/sonarr:latest
     container_name: sonarr
+    network_mode: "host"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -13,14 +14,13 @@ services:
       - ${CONFIG_DIR}/sonarr:/config
       - ${DOWNLOADS_DIR}:/downloads
       - ${MEDIA_DIR}:/media
-    ports:
-      - "${SONARR_PORT}:8989"
     restart: unless-stopped
 
   # Radarr - Movie Management
   radarr:
     image: linuxserver/radarr:latest
     container_name: radarr
+    network_mode: "host"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -29,22 +29,19 @@ services:
       - ${CONFIG_DIR}/radarr:/config
       - ${DOWNLOADS_DIR}:/downloads
       - ${MEDIA_DIR}:/media
-    ports:
-      - "${RADARR_PORT}:7878"
     restart: unless-stopped
 
   # Jellyseerr - Request Management
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
+    network_mode: "host"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
       - ${CONFIG_DIR}/jellyseerr:/app/config
-    ports:
-      - "${JELLYSEERR_PORT}:5055"
     restart: unless-stopped
     depends_on:
       - jellyfin
@@ -53,6 +50,7 @@ services:
   jellyfin:
     image: jellyfin/jellyfin:latest
     container_name: jellyfin
+    network_mode: "host"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -63,11 +61,6 @@ services:
       - ${MEDIA_DIR}:/media
       - /usr/lib/aarch64-linux-gnu/mali:/usr/lib/aarch64-linux-gnu/mali
       - /etc/OpenCL:/etc/OpenCL
-    ports:
-      - "${JELLYFIN_PORT}:8096"
-      - "${JELLYFIN_HTTPS_PORT}:8920" # Optional HTTPS port
-      - "7359:7359/udp" # Optional discovery port
-      - "1900:1900/udp" # Optional DLNA port
     restart: unless-stopped
     privileged: true # Required for hardware acceleration
     devices:
@@ -92,6 +85,7 @@ services:
   sabnzbd:
     image: linuxserver/sabnzbd:latest
     container_name: sabnzbd
+    network_mode: "host"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -100,14 +94,13 @@ services:
       - ${CONFIG_DIR}/sabnzbd:/config
       - ${DOWNLOADS_DIR}:/downloads
       - ${MEDIA_DIR}:/media
-    ports:
-      - "${SABNZBD_PORT}:8080"
     restart: unless-stopped
 
   # Transmission - BitTorrent Client
   transmission:
     image: linuxserver/transmission:latest
     container_name: transmission
+    network_mode: "host"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -118,16 +111,13 @@ services:
       - ${CONFIG_DIR}/transmission:/config
       - ${DOWNLOADS_DIR}:/downloads
       - ${DOWNLOADS_DIR}/watch:/watch
-    ports:
-      - "${TRANSMISSION_PORT}:9091"
-      - "${TRANSMISSION_PEER_PORT}:51413"
-      - "${TRANSMISSION_PEER_PORT}:51413/udp"
     restart: unless-stopped
 
   # NZBGet - Usenet Downloader
   nzbget:
     image: linuxserver/nzbget:latest
     container_name: nzbget
+    network_mode: "host"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -135,8 +125,6 @@ services:
     volumes:
       - ${CONFIG_DIR}/nzbget:/config
       - ${DOWNLOADS_DIR}:/downloads
-    ports:
-      - "${NZBGET_PORT}:6789"
     restart: unless-stopped
 
 volumes:
