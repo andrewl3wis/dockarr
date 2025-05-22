@@ -126,7 +126,17 @@ Simply edit the `.env` file to match your system's configuration before starting
 
 ### Hardware Acceleration
 
-Jellyfin is configured with optional hardware acceleration for Intel GPUs. If you're using a different GPU or don't need hardware acceleration, you can modify the `devices` section in the Jellyfin service configuration.
+Jellyfin is configured with hardware acceleration support for multiple platforms:
+
+- **Intel/AMD GPUs**: `/dev/dri` devices
+- **ARM Mali GPU**: `/dev/mali0`
+- **Rockchip SoCs**: Various devices for hardware video encoding/decoding
+  - `/dev/rga`, `/dev/mpp_service`, `/dev/iep`, etc.
+- **H.265/HEVC Encoding**: Dedicated encoder devices
+
+The container is configured with the `privileged` flag to ensure proper access to these hardware devices. If you're experiencing issues with hardware acceleration or if some devices don't exist on your system, you can modify the `devices` section in the Jellyfin service configuration in the docker-compose.yml file.
+
+For systems without these specific devices, you may need to adjust the configuration to match your hardware.
 
 ## Volume Management
 

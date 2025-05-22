@@ -66,9 +66,24 @@ services:
       - "7359:7359/udp" # Optional discovery port
       - "1900:1900/udp" # Optional DLNA port
     restart: unless-stopped
+    privileged: true # Required for hardware acceleration
     devices:
-      - /dev/dri:/dev/dri # Optional: Hardware acceleration (Intel)
-      # - /dev/vchiq:/dev/vchiq # Optional: Hardware acceleration (Raspberry Pi)
+      # Hardware acceleration devices
+      - /dev/dri:/dev/dri # Intel/AMD GPU
+      - /dev/dma_heap:/dev/dma_heap # Memory management
+      - /dev/mali0:/dev/mali0 # ARM Mali GPU
+      - /dev/rga:/dev/rga # Rockchip RGA
+      - /dev/mpp_service:/dev/mpp_service # Rockchip MPP
+      - /dev/iep:/dev/iep # Rockchip IEP
+      - /dev/mpp-service:/dev/mpp-service # Rockchip MPP alternative
+      - /dev/vpu_service:/dev/vpu_service # Rockchip VPU
+      - /dev/vpu-service:/dev/vpu-service # Rockchip VPU alternative
+      - /dev/hevc_service:/dev/hevc_service # Rockchip HEVC
+      - /dev/hevc-service:/dev/hevc-service # Rockchip HEVC alternative
+      - /dev/rkvdec:/dev/rkvdec # Rockchip video decoder
+      - /dev/rkvenc:/dev/rkvenc # Rockchip video encoder
+      - /dev/vepu:/dev/vepu # Rockchip video encoder
+      - /dev/h265e:/dev/h265e # H.265 encoder
 
   # SABnzbd - Usenet Downloader
   sabnzbd:
