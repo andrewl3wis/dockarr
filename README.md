@@ -7,6 +7,7 @@ This Docker Compose configuration sets up a complete media server stack with the
 - **Jellyseerr**: Media request and user management system
 - **Jellyfin**: Media server for streaming your media collection
 - **SABnzbd**: Usenet downloader
+- **NZBGet**: Alternative Usenet downloader (lightweight and efficient)
 - **Transmission**: BitTorrent client
 
 ## Directory Structure
@@ -22,7 +23,8 @@ The setup creates the following directory structure:
 │   ├── jellyseerr/   # Jellyseerr configuration
 │   ├── jellyfin/     # Jellyfin configuration
 │   ├── sabnzbd/      # SABnzbd configuration
-│   └── transmission/ # Transmission configuration
+│   ├── transmission/ # Transmission configuration
+│   └── nzbget/       # NZBGet configuration
 ├── downloads/        # Shared downloads folder
 │   └── watch/        # Transmission watch directory
 └── media/            # Shared media library
@@ -76,6 +78,7 @@ After starting the containers, you can access each service at:
 - **Jellyseerr**: http://localhost:5055
 - **Jellyfin**: http://localhost:8096
 - **SABnzbd**: http://localhost:8080
+- **NZBGet**: http://localhost:6789
 - **Transmission**: http://localhost:9091
 
 ## Configuration
@@ -101,6 +104,7 @@ JELLYFIN_HTTPS_PORT=8920
 SABNZBD_PORT=8080
 TRANSMISSION_PORT=9091
 TRANSMISSION_PEER_PORT=51413
+NZBGET_PORT=6789
 
 # Transmission credentials
 TRANSMISSION_USER=admin
@@ -157,15 +161,28 @@ All data is stored outside the containers in the following locations:
 
 After starting the services for the first time:
 
-1. Configure SABnzbd with your Usenet provider details
+1. Configure your Usenet downloaders:
+   - **SABnzbd**: Set up your Usenet provider details
+   - **NZBGet**: Configure your Usenet providers
+     - Default login is nzbget/tegbzn6789
+     - More lightweight and efficient than SABnzbd
+     - Better for lower-powered devices
+
 2. Configure Transmission with your BitTorrent settings
    - Default login is admin/adminadmin (configurable in .env file)
    - The watch directory is set up at ./downloads/watch
-3. Set up Sonarr and Radarr to use both download clients:
-   - SABnzbd for Usenet downloads
+
+3. Set up Sonarr and Radarr to use your preferred download clients:
+   - Choose either SABnzbd or NZBGet for Usenet downloads (or configure both)
    - Transmission for BitTorrent downloads
+   - In Sonarr/Radarr settings, go to "Download Clients" and add each service
+
 4. Configure Jellyfin to scan your media directory
+   - Add libraries for Movies, TV Shows, Music, etc.
+   - Point each library to the corresponding folder in the media directory
+
 5. Set up Jellyseerr to connect to your Jellyfin, Sonarr, and Radarr instances
+   - Follow the setup wizard to connect to each service
 
 ## Backup
 

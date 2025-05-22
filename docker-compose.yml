@@ -124,6 +124,21 @@ services:
       - "${TRANSMISSION_PEER_PORT}:51413/udp"
     restart: unless-stopped
 
+  # NZBGet - Usenet Downloader
+  nzbget:
+    image: linuxserver/nzbget:latest
+    container_name: nzbget
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_DIR}/nzbget:/config
+      - ${DOWNLOADS_DIR}:/downloads
+    ports:
+      - "${NZBGET_PORT}:6789"
+    restart: unless-stopped
+
 volumes:
   media:
     driver: local

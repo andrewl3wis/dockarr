@@ -50,6 +50,7 @@ mkdir -p config/jellyseerr
 mkdir -p config/jellyfin
 mkdir -p config/sabnzbd
 mkdir -p config/transmission
+mkdir -p config/nzbget
 
 # Create downloads and media directories
 mkdir -p downloads
@@ -76,3 +77,4 @@ echo "- Jellyseerr: http://localhost:5055"
 echo "- Jellyfin: http://localhost:8096"
 echo "- SABnzbd: http://localhost:8080"
 echo "- Transmission: http://localhost:9091"
+echo "- NZBGet: http://localhost:6789"
