@@ -1,0 +1,14 @@
+# Environment variables
+.env
+
+# Data directories
+/config/
+/downloads/
+/media/
+
+# Logs
+*.log
+
+# OS specific files
+.DS_Store
+Thumbs.db

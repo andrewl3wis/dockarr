@@ -1,0 +1,37 @@
+version: '3'
+
+# This is an example override file. Copy it to docker-compose.override.yml to use it.
+# docker-compose will automatically merge this with the main docker-compose.yml file.
+
+services:
+  # Example: Add Traefik reverse proxy for Jellyfin
+  jellyfin:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.yourdomain.com`)"
+      - "traefik.http.routers.jellyfin.entrypoints=websecure"
+      - "traefik.http.routers.jellyfin.tls.certresolver=myresolver"
+
+  # Example: Add custom network settings for Sonarr
+  sonarr:
+    networks:
+      - vpn_network
+      - default
+
+  # Example: Add Watchtower for automatic container updates
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_SCHEDULE=0 0 4 * * * # Update at 4 AM
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+# Example: Add custom networks
+networks:
+  vpn_network:
+    external: true
+  default:
+    name: media_network
