@@ -126,15 +126,21 @@ Simply edit the `.env` file to match your system's configuration before starting
 
 ### Hardware Acceleration
 
-Jellyfin is configured with hardware acceleration support for multiple platforms:
+Jellyfin is configured with comprehensive hardware acceleration support for multiple platforms:
 
 - **Intel/AMD GPUs**: `/dev/dri` devices
-- **ARM Mali GPU**: `/dev/mali0`
+- **ARM Mali GPU**: 
+  - Device: `/dev/mali0`
+  - Mali libraries: `/usr/lib/aarch64-linux-gnu/mali` mounted from host
+  - OpenCL support: `/etc/OpenCL` mounted from host
+  - Environment variable: `LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/mali`
 - **Rockchip SoCs**: Various devices for hardware video encoding/decoding
   - `/dev/rga`, `/dev/mpp_service`, `/dev/iep`, etc.
 - **H.265/HEVC Encoding**: Dedicated encoder devices
 
-The container is configured with the `privileged` flag to ensure proper access to these hardware devices. If you're experiencing issues with hardware acceleration or if some devices don't exist on your system, you can modify the `devices` section in the Jellyfin service configuration in the docker-compose.yml file.
+The container is configured with the `privileged` flag to ensure proper access to these hardware devices. The official `jellyfin/jellyfin:latest` image is used instead of the LinuxServer.io image to ensure compatibility with the ARM Mali GPU libraries.
+
+If you're experiencing issues with hardware acceleration or if some devices don't exist on your system, you can modify the `devices` section and volume mounts in the Jellyfin service configuration in the docker-compose.yml file.
 
 For systems without these specific devices, you may need to adjust the configuration to match your hardware.
 

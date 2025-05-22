@@ -51,15 +51,18 @@ services:
 
   # Jellyfin - Media Server
   jellyfin:
-    image: linuxserver/jellyfin:latest
+    image: jellyfin/jellyfin:latest
     container_name: jellyfin
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu/mali
     volumes:
       - ${CONFIG_DIR}/jellyfin:/config
       - ${MEDIA_DIR}:/media
+      - /usr/lib/aarch64-linux-gnu/mali:/usr/lib/aarch64-linux-gnu/mali
+      - /etc/OpenCL:/etc/OpenCL
     ports:
       - "${JELLYFIN_PORT}:8096"
       - "${JELLYFIN_HTTPS_PORT}:8920" # Optional HTTPS port
