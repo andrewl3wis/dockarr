@@ -48,7 +48,6 @@ mkdir -p config/sonarr
 mkdir -p config/radarr
 mkdir -p config/jellyseerr
 mkdir -p config/jellyfin
-mkdir -p config/sabnzbd
 mkdir -p config/transmission
 mkdir -p config/nzbget
 
@@ -75,7 +74,6 @@ echo "- Sonarr: http://localhost:8989"
 echo "- Radarr: http://localhost:7878"
 echo "- Jellyseerr: http://localhost:5055"
 echo "- Jellyfin: http://localhost:8096"
-echo "- SABnzbd: http://localhost:8080"
 echo "- Transmission: http://localhost:9091"
 echo "- NZBGet: http://localhost:6789"
 echo ""

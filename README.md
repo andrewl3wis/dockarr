@@ -6,8 +6,7 @@ This Docker Compose configuration sets up a complete media server stack with the
 - **Radarr**: Movie management and automation
 - **Jellyseerr**: Media request and user management system
 - **Jellyfin**: Media server for streaming your media collection
-- **SABnzbd**: Usenet downloader
-- **NZBGet**: Alternative Usenet downloader (lightweight and efficient)
+- **NZBGet**: Usenet downloader (lightweight and efficient)
 - **Transmission**: BitTorrent client
 
 ## Directory Structure
@@ -22,7 +21,6 @@ The setup creates the following directory structure:
 │   ├── radarr/       # Radarr configuration
 │   ├── jellyseerr/   # Jellyseerr configuration
 │   ├── jellyfin/     # Jellyfin configuration
-│   ├── sabnzbd/      # SABnzbd configuration
 │   ├── transmission/ # Transmission configuration
 │   └── nzbget/       # NZBGet configuration
 ├── downloads/        # Shared downloads folder
@@ -77,7 +75,6 @@ All services are configured to use host networking, which means they're accessib
 - **Radarr**: http://localhost:7878
 - **Jellyseerr**: http://localhost:5055
 - **Jellyfin**: http://localhost:8096
-- **SABnzbd**: http://localhost:8080
 - **NZBGet**: http://localhost:6789
 - **Transmission**: http://localhost:9091
 
@@ -116,7 +113,6 @@ RADARR_PORT=7878
 JELLYSEERR_PORT=5055
 JELLYFIN_PORT=8096
 JELLYFIN_HTTPS_PORT=8920
-SABNZBD_PORT=8080
 TRANSMISSION_PORT=9091
 TRANSMISSION_PEER_PORT=51413
 NZBGET_PORT=6789
@@ -176,19 +172,16 @@ All data is stored outside the containers in the following locations:
 
 After starting the services for the first time:
 
-1. Configure your Usenet downloaders:
-   - **SABnzbd**: Set up your Usenet provider details
+1. Configure your Usenet downloader:
    - **NZBGet**: Configure your Usenet providers
      - Default login is nzbget/tegbzn6789
-     - More lightweight and efficient than SABnzbd
-     - Better for lower-powered devices
 
 2. Configure Transmission with your BitTorrent settings
    - Default login is admin/adminadmin (configurable in .env file)
    - The watch directory is set up at ./downloads/watch
 
-3. Set up Sonarr and Radarr to use your preferred download clients:
-   - Choose either SABnzbd or NZBGet for Usenet downloads (or configure both)
+3. Set up Sonarr and Radarr to use your download clients:
+   - NZBGet for Usenet downloads
    - Transmission for BitTorrent downloads
    - In Sonarr/Radarr settings, go to "Download Clients" and add each service
 

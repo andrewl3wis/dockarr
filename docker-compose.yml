@@ -81,21 +81,6 @@ services:
       - /dev/vepu:/dev/vepu # Rockchip video encoder
       - /dev/h265e:/dev/h265e # H.265 encoder
 
-  # SABnzbd - Usenet Downloader
-  sabnzbd:
-    image: linuxserver/sabnzbd:latest
-    container_name: sabnzbd
-    network_mode: "host"
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${CONFIG_DIR}/sabnzbd:/config
-      - ${DOWNLOADS_DIR}:/downloads
-      - ${MEDIA_DIR}:/media
-    restart: unless-stopped
-
   # Transmission - BitTorrent Client
   transmission:
     image: linuxserver/transmission:latest
